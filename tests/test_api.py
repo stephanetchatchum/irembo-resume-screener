@@ -1,11 +1,20 @@
 from google import genai
+from google.genai import types
+from dotenv import load_dotenv
 
-#The client reads GEMINI_API_KEY from environment automatically
-client = genai.Client(api_key="AIzaSyC0Mfv0AXRuPyzTteYhjuildYhZ8YJ4TEc")
+# This reads the .env file and loads variables into the environment
+load_dotenv()
+
+# Now the client picks up GEMINI_API_KEY automatically
+client = genai.Client()
 
 response = client.models.generate_content(
     model="gemini-2.5-flash",
-    contents="What is Irembo?"
+    contents="Here is a job description for Senior Python Developer at Irembo...",
+    config=types.GenerateContentConfig(
+        system_instruction="""You are an expert technical recruiter at Irembo...""",
+        temperature=0.0
+    )
 )
 
 print(response.text)
