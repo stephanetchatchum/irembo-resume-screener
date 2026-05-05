@@ -16,7 +16,7 @@ class ResumeScreener:
 
     def chat(self, user_message):
         self.history.append(
-            types.Content(role="user", parts=[types.Part.from_text(user_message)])
+            types.Content(role="user", parts=[types.Part.from_text(text=user_message)])
         )
 
         response = client.models.generate_content(
