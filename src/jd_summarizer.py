@@ -28,18 +28,18 @@ Nice to have:
 
 response = client.models.generate_content(
     model="gemini-2.5-flash",
-    contents=f"""Analyze this job description and extract the key information
+    contents=f"""Analyze this job description and extract the key information.
 
-    <job_description>
-    {jd_text}
-    </job_description>
+<job_description>
+{jd_text}
+</job_description>
 
-    Return a JSON object with these fields:
-    - job_title
-    _ seniority_level (junior/mid/senior/lead)
-    - summary (2-3 sentences)
-    - must_have (list of required skills)
-    - nice_to_have (list of preferred skills)""",
+Return a JSON object with these fields:
+- job_title
+- seniority_level (junior/mid/senior/lead)
+- summary (2-3 sentences)
+- must_have (list of required skills)
+- nice_to_have (list of preferred skills)""",
     config=types.GenerateContentConfig(
         system_instruction="You are an HR analytics expert. Be precise.",
         response_mime_type="application/json",
