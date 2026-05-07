@@ -1,7 +1,7 @@
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-import json
+import json, os
 
 load_dotenv()
 client = genai.Client()
@@ -55,3 +55,12 @@ print("Summary:", result.get("summary"))
 print("\nRequired skills:")
 for skill in result.get("must_have", []):
     print(f" -{skill}")
+
+for skill in result.get("nice_to_have", []):
+    print(f" -{skill}")
+
+os.makedirs("output", exist_ok=True)
+with open("output/jd_summary.json", "w") as f:
+    json.dump(result, f, indent=2)
+
+print("\n✅ Summary saved to output/jd_summary.json")

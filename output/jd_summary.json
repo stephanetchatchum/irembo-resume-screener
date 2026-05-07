@@ -1,0 +1,17 @@
+{
+  "job_title": "Senior Backend Engineer",
+  "seniority_level": "senior",
+  "summary": "Irembo, Rwanda's leading e-government platform, is seeking a Senior Backend Engineer. This role involves designing and building APIs to power Rwanda's digital government services.",
+  "must_have": [
+    "3+ years Python (Django or Flask)",
+    "PostgreSQL and database design",
+    "RESTful API development",
+    "Cloud infrastructure (AWS preferred)",
+    "CI/CD and DevOps practices"
+  ],
+  "nice_to_have": [
+    "GovTech experience",
+    "Docker and Kubernetes",
+    "Data privacy knowledge"
+  ]
+}
