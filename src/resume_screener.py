@@ -68,3 +68,34 @@ def analyze_resume(pdf_bytes: bytes, filename: str) -> dict:
     result = json.loads(response.text)
     result["source_file"] = filename
     return result
+
+def screen_all_resumes(resume_dir: str) -> list:
+    """
+    Screen all PDF resumes in a directory.
+
+    Args:
+        resume_dir: path to the folder containing resume PDFs
+    """
+
+    candidates = []
+    pdf_files = [f for f in os.listdir(resume_dir) if f.endswith(".pdf")]
+
+    if not pdf_files:
+        print(f"No PDF file found in {resume_dir}")
+        return []
+    
+    print(f"Found {len(pdf_files)} resumes to screen...\n")
+
+    for filename in pdf_files:
+        filepath = os.path.join(resume_dir, filename)
+        try:
+            with open(filepath, "rb") as f:
+                pdf_bytes = f.read()
+            result = analyze_resume(pdf_bytes, filename)
+            candidates.append(result)
+        except Exception as e:
+            print(f" ERROR processing {filename}: {e}")
+
+    candidates.sort(key=lambda x: x.get("overall_score", 0), reverse=True)
+
+    return candidates
