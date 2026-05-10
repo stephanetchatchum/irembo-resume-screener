@@ -3,6 +3,7 @@ from google.genai import types
 import json
 import os
 from dotenv import load_dotenv
+import time
 
 
 load_dotenv()
@@ -93,9 +94,53 @@ def screen_all_resumes(resume_dir: str) -> list:
                 pdf_bytes = f.read()
             result = analyze_resume(pdf_bytes, filename)
             candidates.append(result)
+            time.sleep(5)
         except Exception as e:
             print(f" ERROR processing {filename}: {e}")
 
     candidates.sort(key=lambda x: x.get("overall_score", 0), reverse=True)
 
     return candidates
+
+def print_rankings(candidates: list):
+    """Print a clean ranking report to the terminal."""
+
+    print("\n" + "=" * 60)
+    print("CANDIDATE RANKING")
+    print("=" * 60)
+
+    for rank, c in enumerate(candidates, 1):
+        print(f"\n#{rank}. {c.get('candidate_name', 'Unknown')}")
+        print(f"   Score:          {c.get('overall_score', '?')}/10")
+        print(f"   Recommendation: {c.get('recommendation', '?').upper()}")
+        print(f"   Experience:     {c.get('experience_years', '?')} years")
+        print(f"   Summary:        {c.get('summary', '')}")
+
+        if c.get("hidden_gems"):
+            print(f"   Hidden Gems:    {', '.join(c['hidden_gems'])}")
+        
+        if c.get("matched_skills"):
+            print(f"   Matched Skills: {', '.join(c['matched_skills'])}")
+        
+        if c.get("missing_skills"):
+            print(f"   Missing Skills: {', '.join(c['missing_skills'])}")
+
+if __name__ == "__main__":
+    resume_dir = "data/sample_resumes"
+
+    print("=== Irembo Resume Screener ===\n")
+
+    candidates = screen_all_resumes(resume_dir)
+
+    if not candidates:
+        print("No candidates to rank")
+    else:
+        print_rankings(candidates)
+
+        os.makedirs("output", exist_ok=True)
+        with open("output/screening_results.json", "w") as f:
+            json.dump(candidates, f, indent=2)
+
+        print(f"\n{'='*60}")
+        print(f"✅ Results saved to output/screening_results.json")
+        print(f"Total candidates screened: {len(candidates)}")
