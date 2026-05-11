@@ -1,0 +1,82 @@
+[
+  {
+    "candidate_name": "Not Provided",
+    "experience_years": 8,
+    "overall_score": 6,
+    "matched_skills": [
+      "problem-solving",
+      "leadership",
+      "collaboration",
+      "software development"
+    ],
+    "missing_skills": [
+      "Python",
+      "Django or Flask",
+      "PostgreSQL",
+      "RESTful API development",
+      "Cloud infrastructure (AWS)",
+      "CI/CD and DevOps practices"
+    ],
+    "strengths": [
+      "Strong academic background",
+      "Proven leadership and collaboration skills",
+      "Experience in software development and problem-solving"
+    ],
+    "hidden_gems": [
+      "Ability to work with complex systems and processes",
+      "Experience in technical consulting projects",
+      "Strong presentation and communication skills"
+    ],
+    "summary": "The candidate has a strong academic background and experience in leadership, collaboration, and software development. However, they lack the required technical skills for the Senior Backend Engineer position. With additional training, they could be a strong fit for the role.",
+    "recommendation": "hold",
+    "source_file": "sampe-resumes-capd-pages-13.pdf"
+  },
+  {
+    "candidate_name": "A.N. ALUM",
+    "experience_years": 15,
+    "overall_score": 4,
+    "matched_skills": [
+      "SQL"
+    ],
+    "missing_skills": [
+      "Python",
+      "Django or Flask",
+      "PostgreSQL",
+      "RESTful API development",
+      "Cloud infrastructure (AWS preferred)",
+      "CI/CD and DevOps practices"
+    ],
+    "strengths": [
+      "Strong ability to manage senior-level relationships and cross-functional teams",
+      "Proven track record of improving client and firm performance",
+      "Extensive experience in strategic planning and business development"
+    ],
+    "hidden_gems": [
+      "Experience with data management and analysis",
+      "Strong presentation and communication skills",
+      "Ability to work in diverse industries and environments"
+    ],
+    "summary": "A.N. ALUM is a highly experienced professional with a strong background in strategy, finance, and education. However, their technical skills do not align with the requirements of the Senior Backend Engineer position. They demonstrate excellent leadership and communication skills, but lack the necessary technical expertise.",
+    "recommendation": "reject",
+    "source_file": "sampe-resumes-capd-pages-14.pdf"
+  },
+  {
+    "candidate_name": "Not Specified",
+    "experience_years": 0,
+    "overall_score": 2,
+    "matched_skills": [],
+    "missing_skills": [
+      "Python",
+      "Django or Flask",
+      "PostgreSQL and database design",
+      "RESTful API development",
+      "Cloud infrastructure (AWS preferred)",
+      "CI/CD and DevOps practices"
+    ],
+    "strengths": [],
+    "hidden_gems": [],
+    "summary": "The candidate does not have any relevant experience or skills for the Senior Backend Engineer position. The resume does not provide enough information to assess the candidate's qualifications.",
+    "recommendation": "reject",
+    "source_file": "sampe-resumes-capd.pdf"
+  }
+]

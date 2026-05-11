@@ -1,13 +1,13 @@
-from google import genai
-from google.genai import types
+from groq import Groq
+from pypdf import PdfReader
 import json
 import os
-from dotenv import load_dotenv
 import time
-
+import io
+from dotenv import load_dotenv
 
 load_dotenv()
-client = genai.Client()
+client = Groq()
 
 JD = """
 Senior Backend Engineer - Irembo
@@ -24,6 +24,19 @@ Nice to have:
 - Docker and Kubernetes
 """
 
+def extract_text_from_pdf(pdf_bytes: bytes) -> str:
+    """
+    Extract plain text from a PDF file.
+
+    Args:
+        pdf_bytes: the raw content of the PDF file
+    """
+    reader = PdfReader(io.BytesIO(pdf_bytes))
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text() or ""
+    return text
+
 def analyze_resume(pdf_bytes: bytes, filename: str) -> dict:
     """
     Analyze a single resume PDF against the job description.
@@ -34,39 +47,55 @@ def analyze_resume(pdf_bytes: bytes, filename: str) -> dict:
     """
     print(f" Analyzing {filename}...")
 
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=[
-            types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf"),
-            f"""Analyze this resume against the job description below.
+    resume_text = extract_text_from_pdf(pdf_bytes)
 
-            <job_description>
-            {JD}
-            </job_description>
+    if not resume_text.strip():
+        print(f" WARNING: Could not extract text from {filename}")
+        return {}
+    
 
-            Return a JSON object with:
-            - candidate_name
-            - experience_years
-            - overall_score (1 to 10)
-            - matched_skills (list)
-            - missing_skills (list)
-            - strengths (list of top 3)
-            - hidden_gems (list)
-            - summary (2-3 sentences)
-            - recommendation: advance, hold, or reject"""
+
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+         messages=[
+            {
+                "role": "system",
+                "content": """You are an expert recruiter at Irembo.
+                                Analyze objectively.
+                                Never judge by name, gender, age, or school.
+                                Look for hidden gems — transferable skills beyond keywords.
+                                Always respond with valid JSON only, no extra text."""
+            },
+            {
+                "role": "user",
+                "content":f"""Analyze this resume against the job description below.
+
+                <job_description>
+                {JD}
+                </job_description>
+
+                <resume>
+                {resume_text}
+                </resume>
+
+                Return a JSON object with:
+                - candidate_name
+                - experience_years
+                - overall_score (1 to 10)
+                - matched_skills (list)
+                - missing_skills (list)
+                - strengths (list of top 3)
+                - hidden_gems (list)
+                - summary (2-3 sentences)
+                - recommendation: advance, hold, or reject"""
+            }
+            
         ],
-        config=types.GenerateContentConfig(
-            system_instruction="""You are an expert recruiter at Irembo. 
-            Analyze objectively. 
-            Never judge by name, gender, age, or school. 
-            Look for hidden gems — transferable skills beyond keywords.
-            """,
-            response_mime_type="application/json",
-            temperature = 0.0
-        )
+        temperature=0.0,
+        response_format={"type": "json_object"}
     )
 
-    result = json.loads(response.text)
+    result = json.loads(response.choices[0].message.content)
     result["source_file"] = filename
     return result
 
