@@ -4,3 +4,4 @@ venv
 DS_Store
 data/sample_resume/
 credentials.json
+token.json
